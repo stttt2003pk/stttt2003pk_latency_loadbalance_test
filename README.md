@@ -21,7 +21,7 @@
 
 ## Deployment and Pre-operaton-contact
 
-可阅读doc文档和相关数据
+可阅读doc文档和相关数据，希望获得相关资料可以联系414150392@qq.com
 
 ## Theory
 
