@@ -1,0 +1,24 @@
+when HTTP_REQUEST {
+
+set poolname [HTTP::uri]
+
+set response ""
+foreach key [table keys -subtable $poolname] {
+
+   set value [table lookup -notouch -subtable $poolname $key]
+   set response "$response<br>$key=$value"
+   log local0. $response 
+   set timeout [table timeout -subtable $poolname $key]
+   set Debug1 [table lookup -subtable $poolname $key]
+   set Debug2 [table timeout -subtable $poolname $key]
+   set Debug3 [table lifetime -subtable $poolname $key]
+   set Debug4 [table lifetime -remaining -subtable $poolname $key]
+   set Debug5 [table timeout -remaining -subtable $poolname $key]
+   log local0. "CLIENT_CLOSED : Debug is $Debug1, $Debug2, $Debug3,$Debug4,$Debug5"
+}
+
+
+
+HTTP::respond 200 content $response
+return
+}

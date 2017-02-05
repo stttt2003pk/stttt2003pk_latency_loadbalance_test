@@ -1,0 +1,27 @@
+when SERVER_CONNECTED {
+set tcp_start_time [clock clicks -milliseconds]
+}
+
+
+
+when LB_SELECTED {
+set fields [split [LB::server name] " "]
+set pool [lindex $fields 0]
+set server [lindex $fields 1]
+set port [lindex $fields 2]
+
+}
+
+when SERVER_CLOSED  {
+set tcp_end_time [ clock clicks -milliseconds ]
+set current_time [ clock seconds]
+set tcp_delay [expr ($tcp_end_time - $tcp_start_time) ]
+table incr -subtable $pool "delay:$server:$port:$current_time" $tcp_delay  
+table incr -subtable $pool "count:$server:$port:$current_time" 1
+table lifetime -subtable $pool "delay:$server:$port:$current_time" 180
+table lifetime -subtable $pool "count:$server:$port:$current_time" 180
+
+
+}
+
+
